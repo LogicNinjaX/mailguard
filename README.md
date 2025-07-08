@@ -1,2 +1,2 @@
-# mailguard
-Consent-Based Email Communication API
+# mailguard (Under Development)
+Consent-Based Email Communication API 
