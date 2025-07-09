@@ -14,11 +14,11 @@ import java.util.UUID;
         name = "user_profile",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "UK_user_profile_username",
+                        name = "uk_user_profile_username",
                         columnNames = {"username"}
                 ),
                 @UniqueConstraint(
-                        name = "UK_user_profile_email",
+                        name = "uk_user_profile_email",
                         columnNames = {"email"}
                 )
         }

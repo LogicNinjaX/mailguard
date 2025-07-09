@@ -13,7 +13,7 @@ import java.util.UUID;
         name = "email_categories",
         uniqueConstraints =
                 @UniqueConstraint(
-                        name = "UK_email_categories_category_name",
+                        name = "uk_email_categories_category_name",
                         columnNames = {"categoryName"}
                 )
 )
