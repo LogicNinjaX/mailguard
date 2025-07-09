@@ -1,1 +1,3 @@
-spring.application.name=mailguard
+spring:
+   application:
+        name: mailguard
