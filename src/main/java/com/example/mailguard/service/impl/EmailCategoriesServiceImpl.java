@@ -10,8 +10,12 @@ import com.example.mailguard.repository.EmailCategoriesRepository;
 import com.example.mailguard.service.EmailCategoriesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -61,4 +65,18 @@ public class EmailCategoriesServiceImpl implements EmailCategoriesService {
         }
     }
 
+    @Override
+    public List<EmailCategoryResponse> getAllCategories(int pageNumber, int pageSize, String dir, String sortBy){
+
+        Sort sort = Sort.by(Sort.Direction.ASC, sortBy);;
+
+        if (dir.equalsIgnoreCase("desc")) {
+            sort = Sort.by(Sort.Direction.DESC, sortBy);
+        }
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        return emailCategoriesRepository.findAll(pageable)
+                .map(emailCategoryMapper::emailCategoriesToResponse).toList();
+    }
 }
