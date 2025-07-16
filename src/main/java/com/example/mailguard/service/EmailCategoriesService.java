@@ -5,6 +5,7 @@ import com.example.mailguard.dto.request.EmailCategoryUpdateRequest;
 import com.example.mailguard.dto.response.EmailCategoryResponse;
 import com.example.mailguard.exception.CategoryNotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface EmailCategoriesService {
@@ -16,4 +17,6 @@ public interface EmailCategoriesService {
     EmailCategoryResponse updateCategory(UUID categoryId, EmailCategoryUpdateRequest request) throws CategoryNotFoundException;
 
     void deleteCategory(UUID categoryId);
+
+    List<EmailCategoryResponse> getAllCategories(int pageNumber, int pageSize, String dir, String sortBy);
 }
