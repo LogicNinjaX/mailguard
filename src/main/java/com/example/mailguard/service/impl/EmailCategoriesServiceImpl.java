@@ -77,6 +77,8 @@ public class EmailCategoriesServiceImpl implements EmailCategoriesService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
         return emailCategoriesRepository.findAll(pageable)
+                .getContent()
+                .stream()
                 .map(emailCategoryMapper::emailCategoriesToResponse).toList();
     }
 }
