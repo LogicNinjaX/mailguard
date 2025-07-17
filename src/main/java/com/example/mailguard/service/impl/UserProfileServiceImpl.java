@@ -55,12 +55,30 @@ public class UserProfileServiceImpl implements UserProfileService {
         UserProfile user = userProfileRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        boolean updated = false;
 
-        userProfileRepository.save(user);
-        LOGGER.info("User: {} updated successfully", request.getUsername());
+        if (user.getUsername() != null && !user.getUsername().equals(request.getUsername())){
+            user.setUsername(request.getUsername());
+            updated = true;
+        }
+
+        if (user.getEmail() != null && !user.getEmail().equals(request.getEmail())){
+            user.setEmail(request.getEmail());
+            updated = true;
+        }
+
+        if (user.getPassword() != null && !user.getPassword().equals(request.getPassword())){
+            user.setPassword(request.getPassword());
+            updated = true;
+        }
+
+        if (updated){
+            userProfileRepository.save(user);
+            LOGGER.info("User with ID {} updated successfully", userId);
+        }else {
+            LOGGER.info("No changes detected for user with ID {}", userId);
+        }
+
         return userMapper.userProfileToUserUpdateResponse(user);
     }
 
@@ -68,7 +86,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     public void deleteUser(UUID userId) {
         int effectedRows = userProfileRepository.deleteUser(userId);
         if (effectedRows > 0){
-            LOGGER.info("user deleted successfully");
+            LOGGER.info("User with ID {} deleted successfully", userId);
         }
     }
 
