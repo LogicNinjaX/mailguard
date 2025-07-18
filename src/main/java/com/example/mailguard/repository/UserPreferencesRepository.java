@@ -13,6 +13,6 @@ public interface UserPreferencesRepository extends JpaRepository<UserPreferences
     @Query("SELECT COUNT(up) FROM UserPreferences up WHERE up.user.userId = :userId AND up.category.categoryId = :categoryId")
     int isPreferenceExists(UUID userId, UUID categoryId);
 
-    @Query("SELECT up FROM UserPreferences WHERE up.user.userId :userId")
+    @Query("SELECT up FROM UserPreferences up WHERE up.user.userId = :userId")
     Page<UserPreferences> findByUserId(UUID userId, Pageable pageable);
 }
