@@ -14,6 +14,7 @@ import com.example.mailguard.service.UserProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -24,17 +25,20 @@ public class UserProfileServiceImpl implements UserProfileService {
     private final UserProfileRepository userProfileRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(UserProfileServiceImpl.class);
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserProfileServiceImpl(UserProfileRepository userProfileRepository, UserMapper userMapper) {
+    public UserProfileServiceImpl(UserProfileRepository userProfileRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userProfileRepository = userProfileRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserRegisterResponse createUser(UserRegisterRequest request, UserRole userRole) {
         UserProfile user = userMapper.userRegisterRequestToUserProfile(request);
         user.setUserRole(userRole);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user = userProfileRepository.save(user);
         LOGGER.info("User created with username: {}, role: {}", request.getUsername(), userRole.toString());
         return userMapper.userProfileToUserRegisterResponse(user);
@@ -88,6 +92,12 @@ public class UserProfileServiceImpl implements UserProfileService {
         if (effectedRows > 0){
             LOGGER.info("User with ID {} deleted successfully", userId);
         }
+    }
+
+    @Override
+    public UserProfile getUserByUsername(String username) {
+        return userProfileRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: "+username));
     }
 
 
