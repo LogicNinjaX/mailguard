@@ -34,6 +34,7 @@ public class EmailCategoriesServiceImpl implements EmailCategoriesService {
     public EmailCategoryResponse createCategory(EmailCategoryRegisterRequest request){
         EmailCategories category = emailCategoryMapper.registerRequestToEmailCategories(request);
         category = emailCategoriesRepository.save(category);
+        LOGGER.info("Email category created successfully with name: {}", request.getCategoryName());
         return emailCategoryMapper.emailCategoriesToResponse(category);
     }
 
@@ -74,7 +75,7 @@ public class EmailCategoriesServiceImpl implements EmailCategoriesService {
             sort = Sort.by(Sort.Direction.DESC, sortBy);
         }
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
 
         return emailCategoriesRepository.findAll(pageable)
                 .getContent()
