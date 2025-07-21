@@ -6,22 +6,11 @@ import java.util.UUID;
 
 public class UserPreferenceSaveRequest {
 
-    @NotBlank(message = "${user.preference-id.not-blank}")
-    UUID userId;
-
     @NotBlank(message = "${category.id.not-blank}")
     UUID categoryId;
 
     @NotBlank(message = "${user.consent.not-blank}")
     boolean consent;
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
 
     public UUID getCategoryId() {
         return categoryId;
