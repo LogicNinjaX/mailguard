@@ -26,6 +26,7 @@ public class EmailCategoryController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/category")
     public ResponseEntity<ApiResponse<EmailCategoryResponse>> creteCategory(@Valid @RequestBody EmailCategoryRegisterRequest request)
     {
@@ -57,6 +58,7 @@ public class EmailCategoryController {
                 .body(new ApiResponse<>(true, "request successful", categoryList));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/category/{category-id}")
     public ResponseEntity<ApiResponse<EmailCategoryResponse>> updateCategory(
             @PathVariable("category-id") UUID categoryId,
@@ -68,6 +70,7 @@ public class EmailCategoryController {
                 .body(new ApiResponse<>(true, "category updated successfully", updatedCategory));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/category/{category-id}")
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable("category-id") UUID categoryId){
         categoryService.deleteCategory(categoryId);
