@@ -1,16 +1,16 @@
 package com.example.mailguard.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
 public class UserPreferenceSaveRequest {
 
-    @NotBlank(message = "${category.id.not-blank}")
+    @NotNull(message = "${category.id.not-null}")
     UUID categoryId;
 
-    @NotBlank(message = "${user.consent.not-blank}")
-    boolean consent;
+    @NotNull(message = "${user.consent.not-null}")
+    Boolean consent;
 
     public UUID getCategoryId() {
         return categoryId;
