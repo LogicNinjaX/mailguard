@@ -43,16 +43,16 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
 
     @Transactional
     @Override
-    public UserPreferenceResponse savePreference(UserPreferenceSaveRequest request){
-        int count = userPreferencesRepository.isPreferenceExists(request.getUserId(), request.getCategoryId());
+    public UserPreferenceResponse savePreference(UUID userId, UserPreferenceSaveRequest request){
+        int count = userPreferencesRepository.isPreferenceExists(userId, request.getCategoryId());
 
         if (count > 0){
-            LOGGER.warn("Preference already exists for userId={} and categoryId={}", request.getUserId(), request.getCategoryId());
+            LOGGER.warn("Preference already exists for userId={} and categoryId={}", userId, request.getCategoryId());
             throw new UserPreferenceExistException("User preference already exists");
         }
 
-        UserProfile user = userProfileRepository.findById(request.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: "+request.getUserId()));
+        UserProfile user = userProfileRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: "+userId));
 
         EmailCategories emailCategory = emailCategoriesRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("Email category not found with id: "+request.getCategoryId()));
@@ -64,7 +64,7 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
 
         UserPreferences savedEntity = savedEntity = userPreferencesRepository.save(userPreference);
 
-        LOGGER.info("User preference saved successfully for userId={}, categoryId={}", request.getUserId(), request.getCategoryId());
+        LOGGER.info("User preference saved successfully for userId={}, categoryId={}", userId, request.getCategoryId());
         return userPreferenceMapper.toUserPreferenceResponse(userPreference);
     }
 

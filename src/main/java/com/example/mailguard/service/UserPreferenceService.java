@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface UserPreferenceService {
 
-    UserPreferenceResponse savePreference(UserPreferenceSaveRequest request) throws UserPreferenceExistException, UserNotFoundException, CategoryNotFoundException;
+    UserPreferenceResponse savePreference(UUID userId, UserPreferenceSaveRequest request) throws UserPreferenceExistException, UserNotFoundException, CategoryNotFoundException;
 
     UserPreferenceResponse updateConsent(UserPreferenceUpdateRequest request) throws UserPreferenceNotFoundException;
 
