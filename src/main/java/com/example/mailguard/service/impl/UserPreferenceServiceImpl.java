@@ -21,10 +21,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class UserPreferenceServiceImpl implements UserPreferenceService {
 
     private final UserPreferencesRepository userPreferencesRepository;
@@ -90,7 +92,7 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
         Sort sort = sortDir.equalsIgnoreCase("desc") ?
                 Sort.by(Sort.Direction.DESC, sortBy) : Sort.by(Sort.Direction.ASC, sortBy);
 
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page-1, size, sort);
 
         return userPreferencesRepository.findByUserId(userId, pageable)
                 .getContent()
