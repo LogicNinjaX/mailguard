@@ -64,8 +64,8 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
         userPreference.setCategory(emailCategory);
         userPreference.setConsent(request.getConsent());
 
-        UserPreferences savedEntity = savedEntity = userPreferencesRepository.save(userPreference);
-
+        userPreference = userPreferencesRepository.save(userPreference);
+        userPreferencesRepository.flush();
         LOGGER.info("User preference saved successfully for userId={}, categoryId={}", userId, request.getCategoryId());
         return userPreferenceMapper.toUserPreferenceResponse(userPreference);
     }
