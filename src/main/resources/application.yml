@@ -21,6 +21,19 @@ spring:
      basename: messages
 
 
+   mail:
+     host: ${smtp-host}
+     port: ${smtp-port}
+     username: ${smtp-uname}
+     password: ${smtp-pass}
+     properties:
+       mail:
+         smtp:
+           auth: true
+           starttls:
+             enable: true
+
+
 jwt:
   secret: ${jwt-secret}
   expiration: ${jwt-exp} # in milliseconds
