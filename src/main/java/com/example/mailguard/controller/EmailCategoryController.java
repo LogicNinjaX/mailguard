@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
-@PreAuthorize("hasRole('ADMIN')")
 public class EmailCategoryController {
 
     private final EmailCategoriesService categoryService;
