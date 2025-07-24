@@ -14,4 +14,9 @@ public interface EmailCategoriesRepository extends JpaRepository<EmailCategories
     @Transactional
     @Query("DELETE FROM EmailCategories ec WHERE ec.categoryId = :categoryId")
     int deleteCategory(UUID categoryId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE EmailCategories ec SET ec.isActive = :activate WHERE ec.categoryId = :categoryId")
+    int updateActivationStatus(boolean activate, UUID categoryId);
 }
