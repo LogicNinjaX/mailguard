@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmailServiceImpl implements EmailService {
+public class AsyncEmailSender {
 
     private final JavaMailSender javaMailSender;
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AsyncEmailSender.class);
 
-    public EmailServiceImpl(JavaMailSender javaMailSender) {
+    public AsyncEmailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
@@ -26,7 +26,6 @@ public class EmailServiceImpl implements EmailService {
 
 
     @Async
-    @Override
     public void sendEmail(String email, String subject, String body) {
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -42,13 +41,4 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.error("Failed to send email to: {} - more info: {}", email, e.getMessage());
         }
     }
-
-
-    @Override
-    public void sendBulkEmail(List<String> emails, String subject, String body){
-        for (String email : emails){
-            sendEmail(email, subject, body);
-        }
-    }
-
 }
