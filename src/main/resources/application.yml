@@ -3,9 +3,9 @@ spring:
         name: mailguard
 
    datasource:
-     url: ${db-url}
-     username: ${db-uname}
-     password: ${db-pass}
+     url: ${DB_URL}
+     username: ${DB_UNAME}
+     password: ${DB_PASS}
 
 
    jpa:
@@ -22,10 +22,10 @@ spring:
 
 
    mail:
-     host: ${smtp-host}
-     port: ${smtp-port}
-     username: ${smtp-uname}
-     password: ${smtp-pass}
+     host: ${SMTP_HOST}
+     port: ${SMTP_PORT}
+     username: ${SMTP_UNAME}
+     password: ${SMTP_PASS}
      properties:
        mail:
          smtp:
@@ -35,5 +35,5 @@ spring:
 
 
 jwt:
-  secret: ${jwt-secret}
-  expiration: ${jwt-exp} # in milliseconds
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXP} # in milliseconds
