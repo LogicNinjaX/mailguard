@@ -8,6 +8,9 @@ import com.example.mailguard.entity.UserProfile;
 import com.example.mailguard.enums.UserRole;
 import com.example.mailguard.service.UserProfileService;
 import com.example.mailguard.util.JwtTokenUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.TableGenerator;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Tag(name = "User Authentication", description = "User login/register request")
 public class AuthController {
 
     private final UserProfileService userProfileService;
@@ -37,7 +41,8 @@ public class AuthController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+    @Operation(summary = "Register user details", description = "Returns saved user details")
     public ResponseEntity<ApiResponse<UserRegisterResponse>> registerUser(@Valid @RequestBody UserRegisterRequest request){
         UserRegisterResponse savedUser = userProfileService.createUser(request, UserRole.USER);
 
@@ -46,7 +51,8 @@ public class AuthController {
     }
 
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
+    @Operation(summary = "User login", description = "Returns json web token")
     public ResponseEntity<ApiResponse<Map<String, String>>> login(@Valid @RequestBody UserLoginRequest request){
         Authentication authentication =
                 authenticationManager.authenticate(

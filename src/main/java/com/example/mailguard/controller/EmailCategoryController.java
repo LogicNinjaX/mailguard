@@ -5,6 +5,9 @@ import com.example.mailguard.dto.request.EmailCategoryUpdateRequest;
 import com.example.mailguard.dto.response.ApiResponse;
 import com.example.mailguard.dto.response.EmailCategoryResponse;
 import com.example.mailguard.service.EmailCategoriesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
+@Tag(name = "Email Category Management", description = "Operations related to email category")
+@SecurityRequirement(name = "bearerAuth")
 public class EmailCategoryController {
 
     private final EmailCategoriesService categoryService;
@@ -26,7 +31,8 @@ public class EmailCategoryController {
 
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/category")
+    @PostMapping(value = "/category", consumes = "application/json", produces = "application/json")
+    @Operation(summary = "Create email category", description = "Returns saved details")
     public ResponseEntity<ApiResponse<EmailCategoryResponse>> creteCategory(@Valid @RequestBody EmailCategoryRegisterRequest request)
     {
         EmailCategoryResponse response = categoryService.createCategory(request);
@@ -35,7 +41,8 @@ public class EmailCategoryController {
     }
 
 
-    @GetMapping("/category/{category-id}")
+    @GetMapping(value = "/category/{category-id}", produces = "application/json")
+    @Operation(summary = "Get category details by id", description = "Returns category details")
     public ResponseEntity<ApiResponse<EmailCategoryResponse>> getCategory(@PathVariable("category-id")UUID categoryId){
         EmailCategoryResponse response = categoryService.getCategory(categoryId);
 
@@ -43,7 +50,8 @@ public class EmailCategoryController {
                 .body(new ApiResponse<>(true, "category fetched successfully", response));
     }
 
-    @GetMapping("/category")
+    @GetMapping(value = "/category", produces = "application/json")
+    @Operation(summary = "Get all categories", description = "Returns list of categories in pages")
     public ResponseEntity<ApiResponse<List<EmailCategoryResponse>>> getCategories(
             @RequestParam(defaultValue = "1", required = false) int page,
             @RequestParam(defaultValue = "10", required = false) int size,
@@ -58,7 +66,8 @@ public class EmailCategoryController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/category/{category-id}")
+    @PutMapping(value = "/category/{category-id}", consumes = "application/json", produces = "application/json")
+    @Operation(summary = "Update category by id", description = "Returns updated details")
     public ResponseEntity<ApiResponse<EmailCategoryResponse>> updateCategory(
             @PathVariable("category-id") UUID categoryId,
             @Valid @RequestBody EmailCategoryUpdateRequest request
@@ -71,9 +80,9 @@ public class EmailCategoryController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/category/{category-id}")
+    @Operation(summary = "Delete category by id")
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable("category-id") UUID categoryId){
         categoryService.deleteCategory(categoryId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(new ApiResponse<>(true, "category deleted successfully", null));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

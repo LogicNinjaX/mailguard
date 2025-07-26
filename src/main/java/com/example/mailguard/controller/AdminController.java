@@ -1,6 +1,8 @@
 package com.example.mailguard.controller;
 
 import com.example.mailguard.service.AdminService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/admin")
 @PreAuthorize("hasRole('ADMIN')")
+@SecurityRequirement(name = "bearerAuth")
+@Hidden
 public class AdminController {
 
     private final AdminService adminService;
