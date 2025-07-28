@@ -38,7 +38,7 @@ public class UserController {
                 .body(new ApiResponse<>(true, "user details updated successfully", response));
     }
 
-    @GetMapping(value = "/users", consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/users", produces = "application/json")
     @Operation(summary = "Get user details", description = "Returns user data")
     public ResponseEntity<ApiResponse<UserDetailsResponse>> getUser(@AuthenticationPrincipal CustomUserDetails userDetails){
         UserDetailsResponse response = userProfileService.getUser(userDetails.getUserId());
@@ -46,7 +46,7 @@ public class UserController {
                 .body(new ApiResponse<>(true, "user retrieved successfully", response));
     }
 
-    @DeleteMapping(value = "/users", consumes = "application/json", produces = "application/json")
+    @DeleteMapping(value = "/users")
     @Operation(summary = "Delete user")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails){
         userProfileService.deleteUser(userDetails.getUserId());
