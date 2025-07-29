@@ -32,7 +32,7 @@ public class UserPreferenceController {
 
 
     @PostMapping(value = "/preferences", consumes = "application/json", produces = "application/json")
-    @Operation(summary = "Save use preference", description = "Returns saved preference details")
+    @Operation(summary = "Save user preference", description = "Returns saved preference details")
     public ResponseEntity<ApiResponse<UserPreferenceResponse>> savePreference(
             @AuthenticationPrincipal CustomUserDetails user,
             @Valid @RequestBody UserPreferenceSaveRequest request
