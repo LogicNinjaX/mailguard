@@ -9,7 +9,6 @@ MailGuard is a Spring Boot backend application that empowers users to **control 
 - 🔐 JWT-based Authentication
 - ✅ Per-category Email Consent Control
 - 📬 Secure Email Sending via Spring Mail
-- 📊 Audit Trail of User Consent Changes
 - 📄 OpenAPI (Swagger UI) Documentation
 - 📁 Modular API Structure: `/preferences`, `/auth`, `/category`
 
@@ -163,6 +162,7 @@ src/
 ```
 ---
 ## 💡 Future Improvements
+- Audit Trail of User Consent Changes
 - Add refresh token support
 - Admin panel for managing categories
 - Redis caching for frequent preference lookups
