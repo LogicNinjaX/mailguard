@@ -1,8 +1,10 @@
 package com.example.mailguard.service.impl;
 
 import com.example.mailguard.dto.request.UserRegisterRequest;
+import com.example.mailguard.dto.request.UserUpdateRequest;
 import com.example.mailguard.dto.response.UserDetailsResponse;
 import com.example.mailguard.dto.response.UserRegisterResponse;
+import com.example.mailguard.dto.response.UserUpdateResponse;
 import com.example.mailguard.entity.UserProfile;
 import com.example.mailguard.enums.UserRole;
 import com.example.mailguard.exception.UserNotFoundException;
@@ -37,6 +39,7 @@ public class UseProfileServiceImplTest {
     private UserProfileServiceImpl userProfileService;
 
     @Test
+    @DisplayName("createUser() should create user and return user")
     void createUser_ShouldReturnResponse(){
         UserRegisterRequest request = new UserRegisterRequest();
         request.setUsername("nitish");
@@ -68,6 +71,7 @@ public class UseProfileServiceImplTest {
 
 
     @Test
+    @DisplayName("getUser() should return valid response when valid user id provided")
     void getUser_ShouldReturnValidResponse_WhenIdProvided(){
         UUID userId = UUID.randomUUID();
 
@@ -87,9 +91,67 @@ public class UseProfileServiceImplTest {
     }
 
     @Test
+    @DisplayName("getUser() should throw exception when user not found")
     void getUser_ShouldThrowException(){
         UUID userId = UUID.randomUUID();
         Mockito.when(userProfileRepository.findById(userId)).thenReturn(Optional.empty());
         Assertions.assertThrows(UserNotFoundException.class, () -> userProfileService.getUser(userId));
+    }
+
+    @Test
+    @DisplayName("updateUser() should update username and return updated response")
+    void updateUser_shouldUpdateUsername_WhenUsernameProvided(){
+        UUID userId = UUID.randomUUID();
+
+        UserUpdateRequest request = new UserUpdateRequest();
+        request.setUsername("nitish");
+
+        UserProfile user = new UserProfile();
+        user.setUserId(userId);
+        user.setUsername("rohit");
+
+        UserUpdateResponse response = new UserUpdateResponse();
+        response.setUsername("nitish");
+
+        Mockito.when(userProfileRepository.findById(userId)).thenReturn(Optional.of(user));
+        Mockito.when(userMapper.userProfileToUserUpdateResponse(user)).thenReturn(response);
+
+        UserUpdateResponse result = userProfileService.updateUser(userId, request);
+        Assertions.assertEquals("nitish", result.getUsername());
+        Assertions.assertEquals("nitish", user.getUsername());
+
+        Mockito.verify(userProfileRepository).save(user);
+    }
+
+    @Test
+    @DisplayName("deleteUser() should log message of successful deletion")
+    void deleteUser_ShouldLogDeletion(){
+        UUID userId = UUID.randomUUID();
+        Mockito.when(userProfileRepository.deleteUser(userId)).thenReturn(1);
+        userProfileService.deleteUser(userId);
+        Mockito.verify(userProfileRepository).deleteUser(userId);
+    }
+
+    @Test
+    @DisplayName("getUserByUsername() should return user when user id is valid")
+    void getUserByUsername_ShouldReturnUser(){
+        String username = "nitish";
+
+        UserProfile user = new UserProfile();
+        user.setUsername(username);
+
+        Mockito.when(userProfileRepository.findByUsername(username)).thenReturn(Optional.of(user));
+
+        UserProfile result = userProfileService.getUserByUsername(username);
+        Assertions.assertEquals(username, result.getUsername());
+    }
+
+    @Test
+    @DisplayName("getUserByUsername() should throw exception when user not found")
+    void getUserByUsername_ShouldThrowException(){
+        String username = "nitish";
+        Mockito.when(userProfileRepository.findByUsername(username)).thenReturn(Optional.empty());
+        Assertions
+                .assertThrows(UserNotFoundException.class, () -> userProfileService.getUserByUsername(username));
     }
 }
