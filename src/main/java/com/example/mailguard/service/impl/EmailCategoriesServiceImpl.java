@@ -54,7 +54,7 @@ public class EmailCategoriesServiceImpl implements EmailCategoriesService {
         category.setDescription(request.getDescription());
 
         category = emailCategoriesRepository.save(category);
-        LOGGER.info("category: {} updated successfully", request.getCategoryName());
+        LOGGER.info("category: {} updated successfully new updated details: name = {} and description: {}", categoryId, request.getCategoryName(), request.getDescription());
 
         return emailCategoryMapper.emailCategoriesToResponse(category);
     }
